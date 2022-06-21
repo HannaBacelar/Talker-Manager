@@ -51,7 +51,7 @@ app.get('/talker/:id', async (req, res) => {
 
  app.post('/login', validaEmail, validaSenha, (req, res) => {
  const token = { token: `${crypto.randomBytes(8).toString('hex')}` };
-
+console.log('ola', token);
   return res.status(HTTP_OK_STATUS).json(token); 
  });
 
