@@ -4,6 +4,12 @@ const fs = require('fs').promises;
  const crypto = require('crypto');
  const validaEmail = require('./validaEmail');
 const validaSenha = require('./validaSenha');
+const validaAuthorization = require('./validaAutorização');
+const validaname = require('./validaName');
+const validaAge = require('./validaAge');
+const validaTalk = require('./validaTalk');
+const validaWatchedAt = require('./validaWatchedAt');
+const validaRate = require('./validaRate');
 
 const app = express();
 app.use(bodyParser.json());
@@ -51,9 +57,33 @@ app.get('/talker/:id', async (req, res) => {
 
  app.post('/login', validaEmail, validaSenha, (req, res) => {
  const token = { token: `${crypto.randomBytes(8).toString('hex')}` };
-console.log('ola', token);
   return res.status(HTTP_OK_STATUS).json(token); 
  });
+
+// requisito 5
+function escreveArquivo(addNovoTalker) {
+   return fs.writeFile('./talker.json', JSON.stringify(addNovoTalker));
+}
+app.use(validaAuthorization);
+
+app.post('/talker',
+validaname, 
+validaAge,
+validaTalk,
+validaWatchedAt,
+validaRate, async (req, res) => {
+const { name, age, talk } = await req.body;
+const talkers = await getTalker();
+const id = talkers.length + 1;
+const novoTalker = { id, 
+  name,
+  age, 
+  talk,
+};
+const spreadTalker = [...talkers, novoTalker];
+await escreveArquivo(spreadTalker);
+return res.status(201).json(novoTalker);
+});
 
 app.listen(PORT, () => {
   console.log('Online');
