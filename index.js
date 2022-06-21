@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs').promises;
  const crypto = require('crypto');
+ const validaEmail = require('./validaEmail');
+const validaSenha = require('./validaSenha');
 
 const app = express();
 app.use(bodyParser.json());
@@ -25,9 +27,9 @@ app.get('/talker', async (req, res) => {
 try {
   const talker = await getTalker();
 
-  return res.status(200).json(talker);
+  return res.status(HTTP_OK_STATUS).json(talker);
 } catch (error) { 
-  return res.status(200).end();
+  return res.status(HTTP_OK_STATUS).end();
 }
 });
 
@@ -45,15 +47,13 @@ app.get('/talker/:id', async (req, res) => {
     return res.status(HTTP_OK_STATUS).json(talkerId2);
 });
 
-// requisito 3
+// requisito 3 e 4
 
- app.post('/login', (req, res) => {
+ app.post('/login', validaEmail, validaSenha, (req, res) => {
  const token = { token: `${crypto.randomBytes(8).toString('hex')}` };
 
-  return res.status(HTTP_OK_STATUS).json(token);
+  return res.status(HTTP_OK_STATUS).json(token); 
  });
-
- // requisito 4 
 
 app.listen(PORT, () => {
   console.log('Online');
