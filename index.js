@@ -84,6 +84,33 @@ const spreadTalker = [...talkers, novoTalker];
 await escreveArquivo(spreadTalker);
 return res.status(201).json(novoTalker);
 });
+// requisito 6 
+
+app.put('/talker/:id', 
+validaname, 
+validaAge,
+validaTalk,
+validaWatchedAt,
+validaRate, async (req, res) => {
+const { id } = req.params;
+const { name, age, talk } = req.body;
+const idTalker = await getTalker();
+const findTalker = idTalker.map((element) => {
+ if (element.id === +id) {
+ return { id: +id, name, age, talk,
+  }; 
+}
+return element;
+});
+await escreveArquivo(findTalker);
+return res.status(200).json({ id: +id,
+  name,
+  age,
+  talk,
+});
+});
+
+// requisito 7 
 
 app.listen(PORT, () => {
   console.log('Online');
