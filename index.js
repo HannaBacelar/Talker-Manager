@@ -112,6 +112,14 @@ return res.status(200).json({ id: +id,
 
 // requisito 7 
 
+app.delete('/talker/:id', async (req, res) => {
+  const { id } = req.params;
+  const idTalker = await getTalker();
+  const findTalker = idTalker.findIndex((e) => e.id === +(id));
+  await escreveArquivo(findTalker);
+  return res.status(204).end();
+});
+
 app.listen(PORT, () => {
   console.log('Online');
 });
