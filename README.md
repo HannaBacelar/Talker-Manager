@@ -1,5 +1,5 @@
   
-  #  📝 Boas vindas ao repositório do projeto Talker anager !
+  #  📝 Boas vindas ao repositório do projeto Talker Manager !
 
 - Este proejto foi desenvolido no ano de 2022 no Módulo de Back-End na trybe!!
 
